@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khaled & Nadine — Wedding</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight: #0a0e1a;
+    --cobalt: #1a2a5e;
+    --deep-blue: #0d1635;
+    --royal-blue: #1e3a8a;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: #8a6f2e;
+    --crimson: #8b1a2a;
+    --crimson-bright: #c0273a;
+    --ivory: #f5f0e8;
+    --cream: #ede5d0;
+    --warm-white: #faf7f2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--midnight);
+    color: var(--ivory);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+  }
+
+  /* ── STARFIELD CANVAS ── */
+  #stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(26,42,94,0.7) 0%, rgba(10,14,26,0.95) 70%);
+    z-index: 0;
+  }
+
+  /* Chandelier orbs */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: pulse 6s ease-in-out infinite;
+    z-index: 0;
+  }
+  .orb-1 { width: 400px; height: 400px; background: rgba(201,168,76,0.12); top: -100px; left: -100px; animation-delay: 0s; }
+  .orb-2 { width: 300px; height: 300px; background: rgba(26,58,138,0.25); top: 10%; right: -80px; animation-delay: 2s; }
+  .orb-3 { width: 350px; height: 350px; background: rgba(139,26,42,0.1); bottom: 5%; left: 20%; animation-delay: 4s; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); }
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.3s;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+    margin: 20px 0;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.5s;
+  }
+  .divider-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .divider-diamond {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  .names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--ivory);
+    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.6s;
+  }
+
+  .names .ampersand {
+    font-style: italic;
+    color: var(--gold-light);
+    font-size: 0.85em;
+    display: block;
+    margin: 4px 0;
+  }
+
+  .wedding-date {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    margin-top: 28px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1s;
+  }
+
+  .hero-cta {
+    margin-top: 56px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.3s;
+  }
+
+  .btn-gold {
+    display: inline-block;
+    padding: 14px 48px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-gold::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+  .btn-gold:hover { color: var(--midnight); }
+  .btn-gold:hover::before { transform: scaleX(1); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 2s;
+    z-index: 1;
+  }
+  .scroll-hint span {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-indent: 0.3em;
+    color: var(--gold-dim);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold-dim), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* ── SECTIONS SHARED ── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 20px;
+  }
+
+  .section-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.45em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--ivory);
+    margin-bottom: 24px;
+    line-height: 1.2;
+  }
+
+  .section-body {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: rgba(245,240,232,0.75);
+    font-weight: 300;
+  }
+
+  /* ── DETAILS SECTION ── */
+  .details-section {
+    background: linear-gradient(180deg, var(--midnight) 0%, var(--deep-blue) 50%, var(--midnight) 100%);
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .detail-card {
+    padding: 48px 32px;
+    text-align: center;
+    border: 1px solid rgba(201,168,76,0.1);
+    position: relative;
+    transition: background 0.4s ease;
+  }
+  .detail-card:hover {
+    background: rgba(201,168,76,0.05);
+  }
+
+  .detail-icon {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .detail-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.4em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .detail-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--ivory);
+    line-height: 1.5;
+  }
+
+  /* ── ORNAMENTAL SEPARATOR ── */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px 0;
+  }
+  .ornament-line {
+    flex: 1;
+    max-width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent);
+  }
+  .ornament-center {
+    color: var(--gold);
+    font-size: 1.2rem;
+    letter-spacing: 0.2em;
+  }
+
+  /* ── RSVP SECTION ── */
+  .rsvp-section {
+    background: radial-gradient(ellipse at center, rgba(26,42,94,0.3) 0%, transparent 70%);
+  }
+
+  .rsvp-form-wrap {
+    max-width: 560px;
+    margin: 60px auto 0;
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 56px 48px;
+    position: relative;
+    background: rgba(10,14,26,0.6);
+    backdrop-filter: blur(10px);
+  }
+  .rsvp-form-wrap::before,
+  .rsvp-form-wrap::after {
+    content: '◆';
+    position: absolute;
+    color: var(--gold);
+    font-size: 0.7rem;
+  }
+  .rsvp-form-wrap::before { top: -8px; left: 50%; transform: translateX(-50%); }
+  .rsvp-form-wrap::after { bottom: -8px; left: 50%; transform: translateX(-50%); }
+
+  .corner {
+    position: absolute;
+    width: 16px; height: 16px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.6;
+  }
+  .corner-tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+  .corner-tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
+  .corner-bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
+  .corner-br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+  .form-group {
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .form-label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .form-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.25);
+    color: var(--ivory);
+    padding: 14px 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+    -webkit-appearance: none;
+  }
+  .form-input:focus {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.05);
+  }
+  .form-input option {
+    background: var(--deep-blue);
+    color: var(--ivory);
+  }
+
+  .attendance-toggle {
+    display: flex;
+    gap: 0;
+  }
+  .toggle-btn {
+    flex: 1;
+    padding: 14px;
+    border: 1px solid rgba(201,168,76,0.25);
+    background: transparent;
+    color: rgba(245,240,232,0.5);
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .toggle-btn:first-child { border-right: none; }
+  .toggle-btn.active {
+    background: rgba(201,168,76,0.15);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .toggle-btn:hover:not(.active) {
+    background: rgba(201,168,76,0.05);
+    color: var(--ivory);
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+  .submit-btn:hover { color: var(--midnight); }
+  .submit-btn:hover::before { transform: scaleX(1); }
+
+  /* Success state */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .success-msg.show { display: block; }
+  .success-icon { font-size: 2.5rem; margin-bottom: 20px; display: block; }
+  .success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--ivory);
+    margin-bottom: 12px;
+  }
+  .success-sub {
+    font-size: 0.95rem;
+    color: rgba(245,240,232,0.6);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 60px 20px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  footer .footer-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--gold-dim);
+    letter-spacing: 0.1em;
+  }
+  footer p {
+    margin-top: 12px;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: rgba(245,240,232,0.25);
+    font-family: 'Cinzel', serif;
+  }
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── CANDLE FLICKER (decorative) ── */
+  .candle-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin: 48px 0;
+    opacity: 0.5;
+  }
+  .candle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .candle-flame {
+    width: 6px;
+    height: 10px;
+    background: radial-gradient(ellipse, #ffe566 0%, #ff8c00 60%, transparent 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    animation: flicker 1.5s ease-in-out infinite;
+  }
+  .candle-flame:nth-child(1) { animation-delay: 0s; }
+  .candle-body {
+    width: 4px;
+    height: 28px;
+    background: linear-gradient(to bottom, #e8c97a, #c9a84c);
+    opacity: 0.7;
+  }
+  @keyframes flicker {
+    0%, 100% { transform: scale(1) skew(0deg); opacity: 1; }
+    25% { transform: scale(0.95) skew(-2deg); opacity: 0.85; }
+    50% { transform: scale(1.05) skew(1deg); opacity: 0.95; }
+    75% { transform: scale(0.98) skew(-1deg); opacity: 0.9; }
+  }
+
+  @media (max-width: 600px) {
+    .rsvp-form-wrap { padding: 40px 28px; }
+    .details-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="hero-content">
+    <p class="hero-tag">You are cordially invited to celebrate</p>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-diamond"></div>
+      <div class="divider-line"></div>
+    </div>
+
+    <h1 class="names">
+      Khaled
+      <span class="ampersand">&amp;</span>
+      Nadine
+    </h1>
+
+    <p class="wedding-date">Friday, August 21st · 2026 · Seattle, WA</p>
+
+    <div class="hero-cta">
+      <a href="#rsvp" class="btn-gold">RSVP Now</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── DETAILS ── -->
+<section class="details-section">
+  <div class="section-inner reveal">
+    <span class="section-label">The Occasion</span>
+    <h2 class="section-title">Join us for an evening of love and celebration</h2>
+    <p class="section-body">
+      Khaled Boulos and Nadine El-Ayache invite you to witness the beginning of their lives together and share in our happiness. Bring your dancing shoes and get ready to party late into the night.
+    </p>
+  </div>
+
+  <div class="section-inner" style="margin-top: 0;">
+    <div class="details-grid reveal">
+      <div class="detail-card">
+        <span class="detail-icon">🕯️</span>
+        <span class="detail-label">Date</span>
+        <div class="detail-value">Friday<br>August 21st, 2026</div>
+      </div>
+      <div class="detail-card">
+        <span class="detail-icon">⏳</span>
+        <span class="detail-label">Time</span>
+        <div class="detail-value">Ceremony at 5:00 PM<br>Reception to follow</div>
+      </div>
+      <div class="detail-card">
+        <span class="detail-icon">🏛️</span>
+        <span class="detail-label">Venue</span>
+        <div class="detail-value">The Ruins<br>570 Roy St, Seattle, WA</div>
+      </div>
+      <div class="detail-card">
+        <span class="detail-icon">✨</span>
+        <span class="detail-label">Dress Code</span>
+        <div class="detail-value">Dressy<br>Casual</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DIVIDER ── -->
+<div class="ornament reveal" style="position:relative;z-index:1;padding:0 40px;">
+  <div class="ornament-line"></div>
+  <div class="ornament-center">❧ ◆ ❧</div>
+  <div class="ornament-line"></div>
+</div>
+
+<!-- Candle row -->
+<div class="candle-row reveal" style="position:relative;z-index:1;">
+  <div class="candle"><div class="candle-flame"></div><div class="candle-body"></div></div>
+  <div class="candle"><div class="candle-flame"></div><div class="candle-body"></div></div>
+  <div class="candle"><div class="candle-flame"></div><div class="candle-body"></div></div>
+  <div class="candle"><div class="candle-flame"></div><div class="candle-body"></div></div>
+  <div class="candle"><div class="candle-flame"></div><div class="candle-body"></div></div>
+</div>
+
+<!-- ── RSVP ── -->
+<section class="rsvp-section" id="rsvp">
+  <div class="section-inner reveal">
+    <span class="section-label">Kindly Reply</span>
+    <h2 class="section-title">Will you be joining us?</h2>
+    <p class="section-body">Please RSVP by June 15th, 2026. We cannot wait to celebrate with you.</p>
+  </div>
+
+  <div class="rsvp-form-wrap reveal">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <!-- Form -->
+    <div id="rsvp-form">
+      <div class="form-group">
+        <label class="form-label" for="guest-name">Full Name</label>
+        <input class="form-input" type="text" id="guest-name" placeholder="Your full name" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Attendance</label>
+        <div class="attendance-toggle">
+          <button class="toggle-btn active" id="btn-yes" onclick="setAttendance('yes')">JOYFULLY ACCEPTS</button>
+          <button class="toggle-btn" id="btn-no" onclick="setAttendance('no')">REGRETFULLY DECLINES</button>
+        </div>
+      </div>
+
+      <div class="form-group" id="guests-group">
+        <label class="form-label" for="guest-count">Number of Guests (including yourself)</label>
+        <select class="form-input" id="guest-count">
+          <option value="1">1 Guest</option>
+          <option value="2">2 Guests</option>
+          <option value="3">3 Guests</option>
+          <option value="4">4 Guests</option>
+        </select>
+      </div>
+
+      <button class="submit-btn" onclick="submitRSVP()">SEND MY RSVP</button>
+    </div>
+
+    <!-- Success -->
+    <div class="success-msg" id="success-msg">
+      <span class="success-icon">💍</span>
+      <h3 class="success-title" id="success-title">We'll see you there!</h3>
+      <p class="success-sub" id="success-sub">Thank you for your RSVP. We're so glad you can make it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="ornament" style="margin-bottom:32px;">
+    <div class="ornament-line"></div>
+    <div class="ornament-center">◆</div>
+    <div class="ornament-line"></div>
+  </div>
+  <p class="footer-names">Khaled &amp; Nadine</p>
+  <p>With love · August 21, 2026</p>
+</footer>
+
+<script>
+  /* ── STARFIELD ── */
+  const canvas = document.getElementById('stars');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    for (let i = 0; i < 180; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2,
+        alpha: Math.random(),
+        speed: Math.random() * 0.003 + 0.001,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function drawStars(t) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.alpha = 0.3 + 0.5 * Math.sin(s.phase + t * s.speed);
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(201,168,76,${s.alpha * 0.7})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+
+  resize();
+  initStars();
+  window.addEventListener('resize', () => { resize(); initStars(); });
+  requestAnimationFrame(drawStars);
+
+  /* ── SCROLL REVEAL ── */
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  /* ── RSVP LOGIC ── */
+  let attendance = 'yes';
+
+  function setAttendance(val) {
+    attendance = val;
+    document.getElementById('btn-yes').classList.toggle('active', val === 'yes');
+    document.getElementById('btn-no').classList.toggle('active', val === 'no');
+    document.getElementById('guests-group').style.display = val === 'yes' ? 'block' : 'none';
+  }
+
+  function submitRSVP() {
+    const name = document.getElementById('guest-name').value.trim();
+    if (!name) {
+      document.getElementById('guest-name').style.borderColor = 'var(--crimson-bright)';
+      setTimeout(() => document.getElementById('guest-name').style.borderColor = '', 1500);
+      return;
+    }
+    const count = attendance === 'yes' ? document.getElementById('guest-count').value : '0';
+
+    // ── GOOGLE SHEETS WEBHOOK ──
+    // Replace YOUR_WEBAPP_URL below with your Apps Script Web App URL (see setup instructions)
+    const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzccDg0njMIIOWjo7z8tNo96O7dQFpeVYj-lElMvtZ-So9U9jJuj8pO9FRUaVRFZp1C/exec';
+
+    const submitBtn = document.querySelector('.submit-btn');
+    submitBtn.textContent = 'SENDING...';
+    submitBtn.disabled = true;
+
+    const payload = {
+      name: name,
+      attending: attendance === 'yes' ? 'Yes' : 'No',
+      guests: count,
+      timestamp: new Date().toLocaleString()
+    };
+
+    if (WEBHOOK_URL === 'YOUR_WEBAPP_URL') {
+      // No webhook yet — still show success locally
+      showSuccess(name, count);
+      return;
+    }
+
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => showSuccess(name, count))
+    .catch(() => showSuccess(name, count)); // still show success even if network hiccup
+  }
+
+  function showSuccess(name, count) {
+    document.getElementById('rsvp-form').style.display = 'none';
+    const msg = document.getElementById('success-msg');
+    msg.classList.add('show');
+
+    if (attendance === 'yes') {
+      document.getElementById('success-title').textContent = `We'll see you there, ${name.split(' ')[0]}!`;
+      document.getElementById('success-sub').textContent = `Thank you! We've noted ${count} guest${count > 1 ? 's' : ''} from your party. We can't wait to celebrate with you.`;
+    } else {
+      document.getElementById('success-title').textContent = `We'll miss you, ${name.split(' ')[0]}.`;
+      document.getElementById('success-sub').textContent = `Thank you for letting us know. You'll be in our thoughts on our special day.`;
+    }
+  }
+</script>
+</body>
+</html>

@@ -788,21 +788,29 @@
       guests: count,
       timestamp: new Date().toLocaleString()
     };
-
+    
     if (WEBHOOK_URL === 'YOUR_WEBAPP_URL') {
       // No webhook yet — still show success locally
       showSuccess(name, count);
       return;
     }
 
+    // Must use no-cors for cross-origin requests to Google Apps Script.
+    // no-cors strips custom headers, so we send as URLSearchParams (form-encoded)
+    // which Google Apps Script can read via e.parameter instead of e.postData
+    const formData = new URLSearchParams();
+    formData.append('name',      payload.name);
+    formData.append('attending', payload.attending);
+    formData.append('guests',    payload.guests);
+    formData.append('timestamp', payload.timestamp);
+    
     fetch(WEBHOOK_URL, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: formData
     })
     .then(() => showSuccess(name, count))
-    .catch(() => showSuccess(name, count)); // still show success even if network hiccup
+    .catch(() => showSuccess(name, count));
   }
 
   function showSuccess(name, count) {

@@ -675,10 +675,13 @@
           <option value="2">2 Guests</option>
           <option value="3">3 Guests</option>
           <option value="4">4 Guests</option>
-          <option value="5">5 Guests</option>
         </select>
       </div>
-
+  
+      <div class="form-group" id="dietary-group">
+        <label class="form-label" for="dietary">Dietary Requirements or Allergies <span style="opacity:0.5;font-size:0.8em;">(optional)</span></label>
+        <input class="form-input" type="text" id="dietary" placeholder="e.g. nut allergy, vegetarian, wheelchair access..." autocomplete="off">
+      </div>
       <button class="submit-btn" onclick="submitRSVP()">SEND MY RSVP</button>
     </div>
 
@@ -763,6 +766,7 @@
     document.getElementById('btn-yes').classList.toggle('active', val === 'yes');
     document.getElementById('btn-no').classList.toggle('active', val === 'no');
     document.getElementById('guests-group').style.display = val === 'yes' ? 'block' : 'none';
+    document.getElementById('dietary-group').style.display = val === 'yes' ? 'block' : 'none';
   }
 
   function submitRSVP() {
@@ -773,6 +777,7 @@
       return;
     }
     const count = attendance === 'yes' ? document.getElementById('guest-count').value : '0';
+    const dietary = attendance === 'yes' ? document.getElementById('dietary').value.trim() : '';
 
     // ── GOOGLE SHEETS WEBHOOK ──
     // Replace YOUR_WEBAPP_URL below with your Apps Script Web App URL (see setup instructions)
@@ -802,6 +807,7 @@
     formData.append('name',      payload.name);
     formData.append('attending', payload.attending);
     formData.append('guests',    payload.guests);
+    formData.append('dietary',   dietary);            // new
     formData.append('timestamp', payload.timestamp);
     
     fetch(WEBHOOK_URL, {

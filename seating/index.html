@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0e1a">
+<meta name="description" content="Find your table for the reception — Khaled &amp; Nadine, August 21st 2026, The Ruins, Seattle.">
+<meta name="robots" content="noindex">
+<title>Find Your Table — Khaled &amp; Nadine</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight:   #0a0e1a;
+    --cobalt:     #1a2a5e;
+    --deep-blue:  #0d1635;
+    --gold:       #e0b84a;
+    --gold-light: #e8c97a;
+    --gold-dim:   #8a6f2e;
+    --ivory:      #f5f0e8;
+    --cream:      #ede5d0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--midnight);
+    color: var(--ivory);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums;
+    overflow-x: hidden;
+  }
+
+  #stars { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+  .glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(70px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-1 { width: 380px; height: 380px; background: rgba(26,58,138,.28); top: -120px; right: -110px; }
+  .glow-2 { width: 300px; height: 300px; background: rgba(201,168,76,.10); bottom: -90px; left: -90px; }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(2.5rem, 8vh, 5rem) 1.25rem 2rem;
+    gap: 2.25rem;
+  }
+
+  /* ── masthead ── */
+
+  .masthead { text-align: center; display: flex; flex-direction: column; align-items: center; }
+
+  .eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-indent: .4em;
+  }
+
+  .names {
+    font-size: clamp(2.6rem, 11vw, 4rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: .02em;
+    color: var(--ivory);
+    margin: .5rem 0 0;
+  }
+  .names .amp {
+    font-style: italic;
+    color: var(--gold-light);
+    font-size: .8em;
+    padding: 0 .12em;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 1.1rem 0 .9rem;
+    width: 200px;
+    max-width: 60vw;
+  }
+  .divider .line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-dim), transparent); }
+  .divider .diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
+
+  .occasion {
+    font-family: 'Cinzel', serif;
+    font-size: .68rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,.55);
+    text-indent: .3em;
+  }
+
+  /* ── lookup ── */
+
+  .lookup { width: 100%; max-width: 30rem; display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .field { position: relative; display: flex; align-items: center; }
+
+  .field input {
+    width: 100%;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.3rem;
+    color: var(--ivory);
+    padding: 1rem 3rem 1rem 1.15rem;
+    background: rgba(245,240,232,.045);
+    border: 1px solid rgba(201,168,76,.28);
+    border-radius: 2px;
+    transition: border-color .3s ease, background .3s ease;
+  }
+  .field input::placeholder { color: rgba(245,240,232,.4); font-style: italic; }
+  .field input:hover { border-color: rgba(201,168,76,.5); }
+  .field input:focus { outline: none; border-color: var(--gold); background: rgba(245,240,232,.07); }
+  .field input:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
+
+  .clear {
+    position: absolute;
+    right: .45rem;
+    width: 2.4rem; height: 2.4rem;
+    display: grid; place-items: center;
+    border: 0; background: transparent;
+    color: rgba(245,240,232,.5);
+    font-size: 1.5rem; line-height: 1;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .clear:hover { color: var(--gold); }
+  .clear:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 1px; border-radius: 50%; }
+  .clear[hidden] { display: none; }
+
+  /* ── results ── */
+
+  .result { display: flex; flex-direction: column; gap: .5rem; }
+
+  .card {
+    border: 1px solid rgba(201,168,76,.22);
+    background: linear-gradient(180deg, rgba(26,42,94,.28), rgba(13,22,53,.18));
+    padding: 2rem 1.5rem 2.2rem;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    animation: fadeUp .5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .card .who {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--ivory);
+    text-wrap: balance;
+  }
+
+  .card .label {
+    font-family: 'Cinzel', serif;
+    font-size: .64rem;
+    font-weight: 600;
+    letter-spacing: .38em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-indent: .38em;
+    margin: 1rem 0 .35rem;
+  }
+
+  .card .seat {
+    font-size: clamp(4.5rem, 26vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: .01em;
+    color: var(--ivory);
+    text-shadow: 0 0 44px rgba(224,184,74,.28);
+  }
+  .card .seat.is-words {
+    font-size: clamp(2rem, 10vw, 2.9rem);
+    line-height: 1.15;
+    font-style: italic;
+    color: var(--gold-light);
+    text-wrap: balance;
+  }
+
+  .card .note {
+    font-size: 1rem;
+    font-style: italic;
+    color: rgba(245,240,232,.6);
+    margin-top: .85rem;
+    text-wrap: balance;
+    max-width: 24rem;
+  }
+
+  .party {
+    list-style: none;
+    margin-top: 1.35rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(201,168,76,.16);
+    width: 100%;
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: .3rem 1.4rem;
+    color: rgba(245,240,232,.72);
+  }
+
+  .choices { list-style: none; display: flex; flex-direction: column; gap: .4rem; }
+
+  .choices button {
+    width: 100%;
+    font-family: inherit;
+    font-size: 1.15rem;
+    color: var(--ivory);
+    text-align: left;
+    padding: .85rem 1.1rem;
+    background: rgba(245,240,232,.035);
+    border: 1px solid rgba(201,168,76,.16);
+    cursor: pointer;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+    transition: border-color .3s ease, background .3s ease;
+  }
+  .choices button:hover { border-color: rgba(201,168,76,.55); background: rgba(201,168,76,.06); }
+  .choices button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+  .choices .tb {
+    font-family: 'Cinzel', serif;
+    font-size: .62rem;
+    font-weight: 600;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  .status {
+    text-align: center;
+    color: rgba(245,240,232,.6);
+    font-size: 1.05rem;
+    font-style: italic;
+    padding: .5rem 0;
+    text-wrap: balance;
+  }
+
+  /* ── footer ── */
+
+  .colophon {
+    margin-top: auto;
+    padding-top: 2.5rem;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
+  }
+  .colophon p {
+    font-size: 1rem;
+    color: rgba(245,240,232,.5);
+    max-width: 24rem;
+    text-wrap: balance;
+  }
+  .back {
+    font-family: 'Cinzel', serif;
+    font-size: .68rem;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    text-indent: .28em;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid rgba(201,168,76,.45);
+    padding: 12px 32px;
+    transition: background .4s ease, border-color .4s ease;
+  }
+  .back:hover { background: rgba(201,168,76,.1); border-color: var(--gold); }
+  .back:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
+
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { animation: none; }
+    * { transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+
+<div class="page">
+  <header class="masthead">
+    <p class="eyebrow">Find your table</p>
+    <h1 class="names">Khaled <span class="amp">&amp;</span> Nadine</h1>
+    <div class="divider" role="presentation">
+      <div class="line"></div><div class="diamond"></div><div class="line"></div>
+    </div>
+    <p class="occasion">The Ruins · August 21st, 2026</p>
+  </header>
+
+  <main class="lookup">
+    <div class="field">
+      <label class="sr-only" for="q">Your name</label>
+      <input id="q" type="text" placeholder="Start typing your name…"
+             autocomplete="off" autocorrect="off" autocapitalize="words"
+             spellcheck="false" enterkeyhint="search">
+      <button class="clear" id="clear" type="button" aria-label="Clear">&times;</button>
+    </div>
+    <div class="result" id="result" role="status" aria-live="polite"></div>
+  </main>
+
+  <footer class="colophon">
+    <p>Can’t find yourself? Find Priya or Marcus — they have the full list and will get you seated.</p>
+    <a class="back" href="/">Back to the wedding</a>
+  </footer>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   YOUR GUEST LIST — this is the only part you need to edit.
+
+   One line per person. Both partners get their own line so either name
+   works. `table` can be a number or any text ("Head Table", "Sweetheart").
+   Add an optional `note` for anything that person should know.
+
+   { name: "Jane Okafor", table: 4 },
+   { name: "Tom Okafor",  table: 4, note: "Vegetarian meal" },
+   ═══════════════════════════════════════════════════════════════════════ */
+
+const GUESTS = [
+  { name: "Khaled Boulos",         table: "Head Table" },
+  { name: "Nadine El-Ayache",      table: "Head Table" },
+  { name: "Priya Raghavan",        table: "Head Table", note: "Maid of honour" },
+  { name: "Marcus Whitmore",       table: "Head Table", note: "Best man" },
+
+  { name: "Grace Osei",            table: 1, note: "Mother of the bride" },
+  { name: "Emmanuel Osei",         table: 1, note: "Father of the bride" },
+  { name: "Helen Whitmore",        table: 1 },
+  { name: "Robert Whitmore",       table: 1 },
+  { name: "Auntie Comfort Mensah", table: 1 },
+
+  { name: "Sarah Bennett",         table: 2 },
+  { name: "Chris Bennett",         table: 2 },
+  { name: "Sarah Bell",            table: 2 },
+  { name: "Chris Bell",            table: 2 },
+
+  { name: "Linh Nguyen",           table: 3 },
+  { name: "Minh Nguyen",           table: 3 },
+  { name: "Thao Nguyen",           table: 3 },
+  { name: "Bao Nguyen",            table: 3, note: "Gluten-free meal" },
+
+  { name: "Olusegun Adeyemi",      table: 4 },
+  { name: "Folake Adeyemi",        table: 4 },
+  { name: "Jonah Feldman",         table: 4 },
+  { name: "Rebecca Feldman",       table: 4 },
+
+  { name: "Aisha Karim",           table: 5 },
+  { name: "Yusuf Karim",           table: 5 },
+  { name: "Nadia Haddad",          table: 5 },
+  { name: "Omar Haddad",           table: 5, note: "Nut allergy" },
+
+  { name: "Elena Petrova",         table: 6 },
+  { name: "Viktor Petrov",         table: 6 },
+  { name: "Claire Dubois",         table: 6 },
+  { name: "Étienne Dubois",        table: 6 },
+
+  { name: "James Okonkwo",         table: 7 },
+  { name: "Tara Okonkwo",          table: 7 },
+  { name: "Danielle Moore",        table: 7 },
+  { name: "Sam Moore",             table: 7 },
+
+  { name: "Hannah Lindqvist",      table: 8 },
+  { name: "Erik Lindqvist",        table: 8 },
+  { name: "Zoe Kaplan",            table: 8 },
+  { name: "Ben Kaplan",            table: 8 },
+
+  { name: "Rosa Delgado",          table: 9 },
+  { name: "Miguel Delgado",        table: 9 },
+  { name: "Ines Delgado",          table: 9, note: "High chair reserved" },
+  { name: "Kwame Boateng",         table: 9 },
+];
+
+/* ───────────────────────── lookup engine ───────────────────────── */
+
+const MAX_CHOICES = 8;
+
+const norm = s => s
+  .toLowerCase()
+  .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^a-z0-9]+/g, " ")
+  .trim();
+
+const INDEX = GUESTS.map(g => ({ ...g, tokens: norm(g.name).split(" ").filter(Boolean) }))
+  .sort((a, b) => {
+    const la = a.tokens[a.tokens.length - 1], lb = b.tokens[b.tokens.length - 1];
+    return la === lb ? a.tokens[0].localeCompare(b.tokens[0]) : la.localeCompare(lb);
+  });
+
+/* one typo away? — substitution, insertion, deletion, or a swapped pair
+   (transpositions are how names actually get mistyped on a phone) */
+function near(a, b) {
+  if (a === b) return true;
+  if (Math.abs(a.length - b.length) > 1) return false;
+
+  let i = 0;
+  while (i < a.length && i < b.length && a[i] === b[i]) i++;
+
+  if (a.length === b.length) {
+    if (a.slice(i + 1) === b.slice(i + 1)) return true;                    // substitution
+    return a[i] === b[i + 1] && a[i + 1] === b[i]                          // swapped pair
+        && a.slice(i + 2) === b.slice(i + 2);
+  }
+  return a.length > b.length
+    ? a.slice(i + 1) === b.slice(i)                                        // extra letter typed
+    : a.slice(i) === b.slice(i + 1);                                       // letter missed
+}
+
+/* every query word must claim a different word of the name, by prefix */
+function matches(guest, qTokens, fuzzy) {
+  const claimed = new Set();
+  for (const qt of qTokens) {
+    let hit = -1;
+    for (let i = 0; i < guest.tokens.length; i++) {
+      if (!claimed.has(i) && guest.tokens[i].startsWith(qt)) { hit = i; break; }
+    }
+    if (hit < 0 && fuzzy && qt.length >= 3) {
+      for (let i = 0; i < guest.tokens.length; i++) {
+        if (claimed.has(i)) continue;
+        const gt = guest.tokens[i];
+        if (near(qt, gt.slice(0, qt.length)) || near(qt, gt.slice(0, qt.length + 1))) { hit = i; break; }
+      }
+    }
+    if (hit < 0) return false;
+    claimed.add(hit);
+  }
+  return true;
+}
+
+function search(query) {
+  const qTokens = norm(query).split(" ").filter(Boolean);
+  if (!qTokens.length) return { qTokens, found: [], fuzzy: false };
+  let found = INDEX.filter(g => matches(g, qTokens, false));
+  let fuzzy = false;
+  if (!found.length) {
+    found = INDEX.filter(g => matches(g, qTokens, true));
+    fuzzy = found.length > 0;
+  }
+  return { qTokens, found, fuzzy };
+}
+
+/* ───────────────────────── rendering ───────────────────────── */
+
+const input  = document.getElementById("q");
+const clear  = document.getElementById("clear");
+const result = document.getElementById("result");
+
+const el = (tag, cls, text) => {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+};
+
+function seatCard(people, fuzzy) {
+  const table = people[0].table;
+  const isNumbered = typeof table === "number";
+  const card = el("div", "card");
+
+  card.append(el("p", "who", people.length === 1 ? people[0].name : "Your party"));
+  card.append(el("p", "label", isNumbered ? "is seated at table" : "is seated at"));
+
+  const seat = el("p", "seat", String(table));
+  if (!isNumbered) seat.classList.add("is-words");
+  card.append(seat);
+
+  if (people.length === 1 && people[0].note) card.append(el("p", "note", people[0].note));
+
+  if (people.length > 1) {
+    const list = el("ul", "party");
+    people.forEach(p => list.append(el("li", null, p.name)));
+    card.append(list);
+  }
+
+  if (fuzzy) card.append(el("p", "note", "Matched on a close spelling — if that isn’t you, keep typing."));
+  return card;
+}
+
+function render() {
+  clear.hidden = input.value.length === 0;
+  result.replaceChildren();
+
+  const { qTokens, found, fuzzy } = search(input.value);
+  if (!qTokens.length) return;
+
+  const typed = qTokens.join("").length;
+
+  if (!found.length) {
+    result.append(el("p", "status", "No match yet. Try your surname, or the name printed on your invitation."));
+    return;
+  }
+
+  /* one answer — or several people who all share a table */
+  const oneTable = found.every(g => String(g.table) === String(found[0].table));
+  if (typed >= 2 && (found.length === 1 || (oneTable && found.length <= 6))) {
+    result.append(seatCard(found, fuzzy));
+    return;
+  }
+
+  if (found.length > MAX_CHOICES) {
+    result.append(el("p", "status", found.length + " people match so far — keep typing."));
+    return;
+  }
+
+  const list = el("ul", "choices");
+  found.forEach(g => {
+    const li = el("li");
+    const btn = el("button");
+    btn.type = "button";
+    btn.append(el("span", "nm", g.name));
+    btn.append(el("span", "tb", typeof g.table === "number" ? "Table " + g.table : g.table));
+    btn.addEventListener("click", () => { input.value = g.name; render(); input.blur(); });
+    li.append(btn);
+    list.append(li);
+  });
+  result.append(el("p", "status", "Which one are you?"));
+  result.append(list);
+}
+
+input.addEventListener("input", render);
+clear.addEventListener("click", () => { input.value = ""; render(); input.focus(); });
+input.addEventListener("keydown", e => { if (e.key === "Escape") { input.value = ""; render(); } });
+
+if (!matchMedia("(pointer: coarse)").matches) input.focus();
+render();
+
+/* ───────────────────────── starfield ───────────────────────── */
+
+(() => {
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let stars = [], raf;
+
+  function seed() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width  = innerWidth  * dpr;
+    canvas.height = innerHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const count = Math.round(innerWidth * innerHeight / 9000);
+    stars = Array.from({ length: count }, () => ({
+      x: Math.random() * innerWidth,
+      y: Math.random() * innerHeight,
+      r: Math.random() * 1.1 + .3,
+      a: Math.random() * .5 + .2,
+      s: Math.random() * .015 + .004,
+      p: Math.random() * Math.PI * 2,
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (const st of stars) {
+      st.p += st.s;
+      const alpha = still ? st.a : st.a + Math.sin(st.p) * .18;
+      ctx.beginPath();
+      ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(245,240,232," + Math.max(0, alpha).toFixed(3) + ")";
+      ctx.fill();
+    }
+    if (!still) raf = requestAnimationFrame(draw);
+  }
+
+  addEventListener("resize", () => { seed(); if (still) draw(); });
+  seed();
+  draw();
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) cancelAnimationFrame(raf);
+    else if (!still) raf = requestAnimationFrame(draw);
+  });
+})();
+</script>
+</body>
+</html>

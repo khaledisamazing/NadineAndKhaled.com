@@ -10,7 +10,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --midnight:   #0a0e1a;
@@ -182,14 +182,19 @@
   }
 
   .card .seat {
-    font-size: clamp(2.9rem, 15.5vw, 3.6rem);
-    font-weight: 300;
+    /* Playfair, not Cormorant: Cormorant's "1" is a serifed stem that reads as
+       a Roman numeral I, making table 11 ambiguous with II. */
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.6rem, 14vw, 3.3rem);
+    font-weight: 400;
     line-height: 1;
     letter-spacing: .01em;
     color: var(--ivory);
     text-shadow: 0 0 44px rgba(224,184,74,.28);
   }
   .card .seat.is-words {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
     font-size: clamp(1.5rem, 7vw, 2rem);
     line-height: 1.15;
     font-style: italic;

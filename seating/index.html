@@ -152,7 +152,7 @@
   .card {
     border: 1px solid rgba(201,168,76,.22);
     background: linear-gradient(180deg, rgba(26,42,94,.28), rgba(13,22,53,.18));
-    padding: 2rem 1.5rem 2.2rem;
+    padding: 1.4rem 1.35rem 1.6rem;
     text-align: center;
     display: flex; flex-direction: column; align-items: center;
     animation: fadeUp .5s ease both;
@@ -164,7 +164,7 @@
   }
 
   .card .who {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 400;
     color: var(--ivory);
     text-wrap: balance;
@@ -178,11 +178,11 @@
     text-transform: uppercase;
     color: var(--gold);
     text-indent: .38em;
-    margin: 1rem 0 .35rem;
+    margin: .7rem 0 .3rem;
   }
 
   .card .seat {
-    font-size: clamp(4.5rem, 26vw, 6.5rem);
+    font-size: clamp(3.1rem, 17vw, 4.1rem);
     font-weight: 300;
     line-height: 1;
     letter-spacing: .01em;
@@ -190,7 +190,7 @@
     text-shadow: 0 0 44px rgba(224,184,74,.28);
   }
   .card .seat.is-words {
-    font-size: clamp(2rem, 10vw, 2.9rem);
+    font-size: clamp(1.6rem, 8vw, 2.2rem);
     line-height: 1.15;
     font-style: italic;
     color: var(--gold-light);
@@ -198,18 +198,18 @@
   }
 
   .card .note {
-    font-size: 1rem;
+    font-size: .95rem;
     font-style: italic;
     color: rgba(245,240,232,.6);
-    margin-top: .85rem;
+    margin-top: .6rem;
     text-wrap: balance;
     max-width: 24rem;
   }
 
   .party {
     list-style: none;
-    margin-top: 1.35rem;
-    padding-top: 1.1rem;
+    margin-top: .95rem;
+    padding-top: .8rem;
     border-top: 1px solid rgba(201,168,76,.16);
     width: 100%;
     display: flex; flex-wrap: wrap; justify-content: center;
@@ -286,6 +286,24 @@
     position: absolute; width: 1px; height: 1px;
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
   }
+
+  /* Keyboard open on a phone: the visible viewport collapses to ~400px, so
+     shed the masthead flourishes and tighten the card. Toggled from JS via
+     visualViewport (iOS does not reflow the layout viewport for the keyboard,
+     so a height media query alone would never fire there). */
+  .page.compact { padding-top: .9rem; gap: .85rem; }
+  .page.compact .divider,
+  .page.compact .occasion,
+  .page.compact .colophon { display: none; }
+  .page.compact .names { font-size: 1.6rem; }
+  .page.compact .eyebrow { font-size: .6rem; letter-spacing: .3em; }
+  .page.compact .field input { font-size: 1.15rem; padding-top: .8rem; padding-bottom: .8rem; }
+  .page.compact .card { padding: 1rem 1.1rem 1.15rem; }
+  .page.compact .card .who { font-size: 1.1rem; }
+  .page.compact .card .label { margin: .5rem 0 .2rem; }
+  .page.compact .card .seat { font-size: clamp(2.6rem, 14vw, 3.2rem); }
+  .page.compact .card .seat.is-words { font-size: clamp(1.35rem, 6.5vw, 1.8rem); }
+  .page.compact .choices button { padding: .7rem 1rem; }
 
   @media (prefers-reduced-motion: reduce) {
     .card { animation: none; }
@@ -600,6 +618,18 @@ input.addEventListener("keydown", e => { if (e.key === "Escape") { input.value =
 
 if (!matchMedia("(pointer: coarse)").matches) input.focus();
 render();
+
+/* ── keyboard-aware compaction ──
+   The keyboard shrinks visualViewport.height without changing innerHeight on
+   iOS, so watch that instead of a resize/media query. */
+(() => {
+  const vv = window.visualViewport;
+  if (!vv) return;
+  const page = document.querySelector(".page");
+  const apply = () => page.classList.toggle("compact", vv.height < 620);
+  vv.addEventListener("resize", apply);
+  apply();
+})();
 
 /* ───────────────────────── starfield ───────────────────────── */
 

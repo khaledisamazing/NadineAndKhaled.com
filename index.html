@@ -325,6 +325,50 @@
     letter-spacing: 0.2em;
   }
 
+  /* ── GIFT NOTE ── */
+  .gift-note {
+    max-width: 620px;
+    margin: 72px auto 0;
+    padding: 48px 44px;
+    text-align: center;
+    position: relative;
+    border: 1px solid rgba(201,168,76,0.28);
+    background: rgba(10,14,26,0.5);
+    backdrop-filter: blur(10px);
+  }
+  .gift-note::before,
+  .gift-note::after {
+    content: "◆";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--gold);
+    font-size: 0.7rem;
+    line-height: 1;
+  }
+  .gift-note::before { top: -8px; }
+  .gift-note::after  { bottom: -8px; }
+
+  .gift-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.45rem, 5vw, 1.95rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.3;
+    color: var(--ivory);
+    text-wrap: balance;
+    margin-bottom: 18px;
+  }
+
+  .gift-sub {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.62);
+    max-width: 42ch;
+    margin: 0 auto;
+    text-wrap: balance;
+  }
+
   /* ── FOOTER ── */
   footer {
     position: relative;
@@ -396,6 +440,7 @@
 
   @media (max-width: 600px) {
     .details-grid { grid-template-columns: 1fr; }
+    .gift-note { padding: 36px 26px; margin-top: 56px; }
   }
 </style>
 </head>
@@ -445,8 +490,6 @@
     <p class="section-body">
       Khaled Boulos and Nadine El-Ayache invite you to witness the beginning of their lives together and share in our happiness. Bring your dancing shoes and get ready to party late into the night.
     </p>
-    <br/>
-    <span class="section-label">No gifts, please. Your presence is present enough!</span>
   </div>
 
   <div class="section-inner" style="margin-top: 0;">
@@ -471,6 +514,12 @@
         <span class="detail-label">Dress Code</span>
         <div class="detail-value">Dressy<br>Casual</div>
       </div>
+    </div>
+
+    <div class="gift-note reveal">
+      <span class="section-label">A Note on Gifts</span>
+      <p class="gift-headline">Your presence is the only present we need.</p>
+      <p class="gift-sub">Truly &mdash; no gifts, please. Having you there to celebrate with us is more than enough.</p>
     </div>
   </div>
 </section>

@@ -50,7 +50,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 60px 20px;
+    padding: 60px 20px 110px;
     overflow: hidden;
     z-index: 1;
   }
@@ -145,10 +145,10 @@
   }
 
   .hero-cta {
-    margin-top: 56px;
+    margin-top: 44px;
     margin-botton: 48px;
     opacity: 0;
-    animation: fadeUp 1s ease forwards 1.3s;
+    animation: fadeUp 1s ease forwards 1.5s;
   }
 
   .btn-gold {
@@ -327,9 +327,11 @@
 
   /* ── GIFT NOTE ── */
   .gift-note {
-    max-width: 620px;
-    margin: 72px auto 0;
-    padding: 48px 44px;
+    max-width: 520px;
+    margin: 40px auto 0;
+    padding: 32px 30px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.2s;
     text-align: center;
     position: relative;
     border: 1px solid rgba(201,168,76,0.28);
@@ -351,18 +353,18 @@
 
   .gift-headline {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.45rem, 5vw, 1.95rem);
+    font-size: clamp(1.2rem, 4.4vw, 1.55rem);
     font-weight: 300;
     font-style: italic;
     line-height: 1.3;
     color: var(--ivory);
     text-wrap: balance;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
   }
 
   .gift-sub {
-    font-size: 1.05rem;
-    line-height: 1.7;
+    font-size: 0.97rem;
+    line-height: 1.65;
     color: rgba(245,240,232,0.62);
     max-width: 42ch;
     margin: 0 auto;
@@ -438,9 +440,30 @@
     75% { transform: scale(0.98) skew(-1deg); opacity: 0.9; }
   }
 
+  /* Short viewports: the gift panel makes the hero tall, so compact it and
+     drop the decorative scroll hint — the CTA must stay above the fold. */
+  @media (max-height: 830px) {
+    .scroll-hint { display: none; }
+    .hero { padding: 40px 20px; }
+    .gift-note { margin-top: 26px; padding: 22px 24px; }
+    .gift-headline { font-size: clamp(1.1rem, 3.6vw, 1.32rem); margin-bottom: 10px; }
+    .gift-sub { font-size: 0.92rem; line-height: 1.55; }
+    .hero-cta { margin-top: 30px; }
+  }
+
+  /* Very short screens (iPhone SE and similar): tighten further. */
+  @media (max-height: 700px) {
+    .hero { padding: 32px 20px; }
+    .gift-note { margin-top: 20px; padding: 18px 20px; }
+    .gift-headline { font-size: 1.08rem; margin-bottom: 8px; }
+    .gift-sub { font-size: 0.88rem; line-height: 1.5; }
+    .hero-cta { margin-top: 24px; }
+  }
+
   @media (max-width: 600px) {
     .details-grid { grid-template-columns: 1fr; }
-    .gift-note { padding: 36px 26px; margin-top: 56px; }
+    .gift-note { padding: 24px 20px; margin-top: 28px; }
+    .hero-cta { margin-top: 38px; }
   }
 </style>
 </head>
@@ -470,6 +493,12 @@
     </h1>
 
     <p class="wedding-date">Friday, August 21st · 2026 · Seattle, WA</p>
+
+    <div class="gift-note">
+      <span class="section-label">A Note on Gifts</span>
+      <p class="gift-headline">Your presence is the only present we need.</p>
+      <p class="gift-sub">Truly &mdash; no gifts, please. Having you there to celebrate with us is more than enough.</p>
+    </div>
 
     <div class="hero-cta">
       <a href="/seating/" class="btn-gold">Find Your Seat</a>
@@ -514,12 +543,6 @@
         <span class="detail-label">Dress Code</span>
         <div class="detail-value">Dressy<br>Casual</div>
       </div>
-    </div>
-
-    <div class="gift-note reveal">
-      <span class="section-label">A Note on Gifts</span>
-      <p class="gift-headline">Your presence is the only present we need.</p>
-      <p class="gift-sub">Truly &mdash; no gifts, please. Having you there to celebrate with us is more than enough.</p>
     </div>
   </div>
 </section>
